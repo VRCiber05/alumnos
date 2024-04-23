@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio31</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/javascript" src="micodigo.js"></script>
+
+    
+</head>
+<body>
+    <script>
+        
+                
+        function generarCombinacionSecreta() {
+          const combinacionSecreta = [];
+          for (let i = 0; i < 4; i++) {
+            combinacionSecreta.push(Math.floor(Math.random() * 10)); // Números aleatorios del 0 al 9
+          }
+          return combinacionSecreta;
+        }
+
+        
+        function verificarJugada(combinacionSecreta, jugada) {
+          let muertos = 0;
+          let heridos = 0;
+
+          for (let i = 0; i < 4; i++) {
+            if (combinacionSecreta[i] === jugada[i]) {
+              muertos++;
+            } if (combinacionSecreta.includes(jugada[i])) {
+              heridos++;
+            }
+          }
+
+          return [muertos, heridos];
+        }
+
+     
+        function jugarMasterMind() {
+          const combinacionSecreta = generarCombinacionSecreta();
+          let intentos = 0;
+
+          console.log("¡Bienvenido al juego Master Mind!");
+          console.log("El juego ha generado una combinación secreta de 4 números.");
+
+          while (intentos < 8) {
+            const jugada = prompt("Intento #" + (intentos + 1) + ": Ingresa una combinación de 4 números (del 0 al 9) separados por espacios:").split(" ").map(Number);
+
+            if (jugada.length !== 4 || jugada.some(isNaN) || jugada.some(num => num < 0 || num > 9)) {
+              console.log("Por favor, ingresa una combinación válida de 4 números del 0 al 9.");
+              continue;
+            }
+
+            const resultado = verificarJugada(combinacionSecreta, jugada);
+
+            if (resultado[0] === 4) {
+              console.log("¡Felicidades! Has adivinado la combinación secreta: " + combinacionSecreta.join(" "));
+              break;
+            } else {
+              console.log("Muertos: " + resultado[0] + ", Heridos: " + resultado[1]);
+              intentos++;
+            }
+          }
+
+          if (intentos === 8) {
+            console.log("Lo siento, has agotado tus 8 intentos. La combinación secreta era: " + combinacionSecreta.join(" "));
+          }
+        }
+
+        // Iniciar el juego
+        jugarMasterMind();
+
+
+    </script>
+    
+</body>
+</html>
+

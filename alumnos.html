@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Verónica Rodríguez Pravia">
+    <title>Ejercicio38</title>
+
+     <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+  </style>
+  <script>
+    // Definición de la clase Alumno
+    class Alumno {
+      constructor(nombre, nota1, nota2, nota3) {
+        this.nombre = nombre;
+        this.notas = [nota1, nota2, nota3];
+        this.notaMedia = this.calcularNotaMedia();
+      }
+
+      calcularNotaMedia() {
+        const suma = this.notas.reduce((total, nota) => total + nota, 0);
+        return suma / this.notas.length;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Array para almacenar los alumnos
+      const alumnos = [];
+
+      // Función para añadir un nuevo alumno
+      function añadirAlumno(nombre, nota1, nota2, nota3) {
+        const alumno = new Alumno(nombre, nota1, nota2, nota3);
+        alumnos.push(alumno);
+      }
+
+      // Función para eliminar un alumno por nombre
+      function eliminarAlumno(nombre) {
+        const index = alumnos.findIndex(alumno => alumno.nombre === nombre);
+        if (index !== -1) {
+          alumnos.splice(index, 1);
+        }
+      }
+
+      // Función para mostrar el array de alumnos ordenado por nombre o nota media
+      function mostrarAlumnos(orden) {
+        const alumnosDiv = document.getElementById('alumnos');
+        alumnosDiv.innerHTML = '';
+
+        const alumnosOrdenados = [...alumnos];
+        if (orden === 'nombre') {
+          alumnosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        } else if (orden === 'media') {
+          alumnosOrdenados.sort((a, b) => b.notaMedia - a.notaMedia);
+        }
+
+        alumnosOrdenados.forEach(alumno => {
+          const p = document.createElement('p');
+          p.textContent = `Nombre: ${alumno.nombre}, Notas: ${alumno.notas.join(', ')}, Nota Media: ${alumno.notaMedia.toFixed(2)}`;
+          alumnosDiv.appendChild(p);
+        });
+      }
+
+      // Event listeners para los botones
+      document.getElementById('añadirAlumnoBtn').addEventListener('click', function() {
+        const nombre = prompt('Ingrese el nombre del nuevo alumno:');
+        const nota1 = parseFloat(prompt('Ingrese la Nota 1 del nuevo alumno:'));
+        const nota2 = parseFloat(prompt('Ingrese la Nota 2 del nuevo alumno:'));
+        const nota3 = parseFloat(prompt('Ingrese la Nota 3 del nuevo alumno:'));
+
+        if (!isNaN(nota1) && !isNaN(nota2) && !isNaN(nota3)) {
+          añadirAlumno(nombre, nota1, nota2, nota3);
+          mostrarAlumnos('nombre');
+        } else {
+          alert('Ingrese notas válidas.');
+        }
+      });
+
+      document.getElementById('eliminarAlumnoBtn').addEventListener('click', function() {
+        const nombre = prompt('Ingrese el nombre del alumno a eliminar:');
+        if (nombre !== null) {
+          eliminarAlumno(nombre);
+          mostrarAlumnos('nombre');
+        }
+      });
+
+      document.getElementById('ordenarPorNombreBtn').addEventListener('click', function() {
+        mostrarAlumnos('nombre');
+      });
+
+      document.getElementById('ordenarPorMediaBtn').addEventListener('click', function() {
+        mostrarAlumnos('media');
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Gestión de Alumnos</h1>
+  <button id="añadirAlumnoBtn">Añadir Alumno</button>
+  <button id="eliminarAlumnoBtn">Eliminar Alumno</button>
+  <button id="ordenarPorNombreBtn">Ordenar por Nombre</button>
+  <button id="ordenarPorMediaBtn">Ordenar por Nota Media</button>
+  <div id="alumnos"></div>
+</body>
+</html>

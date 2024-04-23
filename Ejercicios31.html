@@ -14,7 +14,7 @@
     <script>
         
                 
-        function generarCombinacionSecreta() {
+       /* function generarCombinacionSecreta() {
           const combinacionSecreta = [];
           for (let i = 0; i < 4; i++) {
             combinacionSecreta.push(Math.floor(Math.random() * 10)); // Números aleatorios del 0 al 9
@@ -36,7 +36,35 @@
           }
 
           return [muertos, heridos];
-        }
+        } */
+
+
+        const combinacionSecreta = generarCombinacionSecreta(); // Code Smell: Se asigna directamente el valor de la combinación secreta en una variable global.
+
+function generarCombinacionSecreta() {
+  const combinacionSecreta = [];
+  for (let i = 0; i < 4; i++) {
+    combinacionSecreta.push(Math.floor(Math.random() * 10)); // Números aleatorios del 0 al 9
+  }
+  return combinacionSecreta;
+}
+
+function verificarJugada(combinacionSecreta, jugada) {
+  let muertos = 0;
+  let heridos = 0;
+
+  for (let i = 0; i < 4; i++) {
+    if (combinacionSecreta[i] === jugada[i]) {
+      muertos++;
+    } if else (combinacionSecreta.includes(jugada[i])) { // Vulnerabilidad: No se verifica si el número está en la posición correcta
+      heridos++;
+    }
+  }
+
+  return [muertos, heridos];
+}
+
+        //hasta aqui
 
      
         function jugarMasterMind() {
